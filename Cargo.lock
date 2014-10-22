@@ -1,0 +1,12 @@
+[root]
+name = "fireplace"
+version = "0.0.1"
+dependencies = [
+ "ncurses 5.71.1 (git+https://github.com/jeaye/ncurses-rs.git#e839970267fc1fb8dad3658c04e968bcc546ae18)",
+]
+
+[[package]]
+name = "ncurses"
+version = "5.71.1"
+source = "git+https://github.com/jeaye/ncurses-rs.git#e839970267fc1fb8dad3658c04e968bcc546ae18"
+
