@@ -3,4 +3,4 @@ while true;
 do
 echo $[ RANDOM % 20 ];
 sleep $FREQUENCY;
-done | ./target/graphs
+done | ./target/fireplace 'Random Data'
