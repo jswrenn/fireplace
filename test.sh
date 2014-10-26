@@ -1,7 +1,6 @@
 FREQUENCY=0.1
 while true;
 do
-#echo $[ RANDOM % 20 ];
-echo '2'
+echo $[ RANDOM % 2 ];
 sleep $FREQUENCY;
-done | ./target/fireplace 'People in this bed'
+done | ./target/fireplace -t 'People in this bed'
