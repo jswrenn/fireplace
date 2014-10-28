@@ -21,10 +21,9 @@ fn print_usage(program: &str, _opts: &[OptGroup]) {
     }
 }
 
-fn initialize_program() -> Program {
+fn initialize_program() -> Option<Program> {
     let args: Vec<String> = os::args();
     let program_name = args[0].clone();
-    
     
     let opts = [
         optflag("h", "help", "print this help menu"),
@@ -42,14 +41,14 @@ fn initialize_program() -> Program {
     
     if matches.opt_present("h") {
         print_usage(program_name.as_slice(), opts);
-        fail!("Help Menu");
+        return None;
     }
     
-    return Program {
+    return Some(Program {
         data: Vec::new(),
         title: matches.opt_str("t"),
         scale: initialize_scale(&matches),
-    };
+    });
 }
     
 fn initialize_scale(matches:&Matches)-> ScaleMode {
@@ -76,7 +75,14 @@ fn initialize_scale(matches:&Matches)-> ScaleMode {
 }
 
 fn main() {
-    let mut program: Program = initialize_program();
+    let mut p: Option<Program> = initialize_program();
+    
+    match p {
+        Some(_) => {},
+        None => {return;}
+    }
+    
+    let mut program = p.unwrap();
 
     /* Setup ncurses. */
     initscr();
