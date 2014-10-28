@@ -107,7 +107,7 @@ fn render_axes(frame:&Frame) {
     
     // Render a horizontal line stretching the width of the terminal
     let row = value_to_row(frame,0.0);
-    for i in range(0,frame.cols-1) {
+    for i in range(0,frame.cols-2) {
         render_overlay_char(row, i, ACS_HLINE() as u32);
     }
     
