@@ -66,6 +66,7 @@ fn main() {
     initscr();
     curs_set(CURSOR_INVISIBLE);
 
+    let mut t = 0.0f64;
     // While input is availabe on stdin
     for line in io::stdin().lines() {
         // Clear the screen
@@ -75,7 +76,8 @@ fn main() {
         let value:f64 = from_str(line.unwrap().as_slice().trim()).unwrap();
         
         // Push it into the array
-        program.data.push(value);
+        program.data.push(t.sin());
+        t = t + 0.1;
         
         view::render_frame(&program);
         
