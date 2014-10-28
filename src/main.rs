@@ -12,14 +12,19 @@ mod view;
 mod data;
 
 fn print_usage(program: &str, _opts: &[OptGroup]) {
-    println!("Usage: {} [options]", program);
-    println!("-o\t\tOutput");
-    println!("-h --help\tUsage");
+    println!("Usage: {} [--title <TITLE>] [--fixed [--lower <LOWER BOUND>] --upper <UPPER_BOUND>] [--variable]", program);
+    for opt in _opts.iter() {
+        print!("-{} ",opt.short_name);
+        print!("--{} ",opt.long_name);
+        print!("{} ",opt.hint);
+        print!("{}\n",opt.desc);
+    }
 }
 
 fn initialize_program() -> Program {
     let args: Vec<String> = os::args();
     let program_name = args[0].clone();
+    
     
     let opts = [
         optflag("h", "help", "print this help menu"),
