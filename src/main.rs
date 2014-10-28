@@ -29,8 +29,8 @@ fn initialize_program() -> Program {
     let opts = [
         optflag("h", "help", "print this help menu"),
         optopt("t", "title", "set the title of the graph", "TITLE"),
-        optflag("f", "fixed", "used a fixed scale"),
-        optflag("v", "variable", "use a variable scale"),
+        optflag("f", "fixed", "use a fixed scale (upper bound must be set)"),
+        optflag("v", "variable", "use a variable scale (default)"),
         optopt("l", "lower", "lower bound of y axis when using a fixed scale", "MINIMUM"),
         optopt("u", "upper", "upper bound of y axis when using a fixed scale", "MAXIMUM"),
     ];
