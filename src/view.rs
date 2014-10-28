@@ -128,7 +128,7 @@ fn value_to_row(frame: &Frame, value:f64) -> i32 {
 fn render_label(frame:&Frame,value:f64) {
     let label = value.to_string();
     let row = value_to_row(frame, value);
-    let col = frame.cols - 3 - label.len() as i32;
+    let col = frame.cols - 2 - label.len() as i32;
     render_overlay_char(row, frame.cols - 1, ACS_RTEE());
     render_overlay_string(row, col, label.as_slice());
 }
