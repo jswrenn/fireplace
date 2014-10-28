@@ -21,7 +21,7 @@ pub fn render_frame(program:&Program) {
         visible_data: visible_slice,
         extremes : match program.scale {
             Fixed(l,u) => (l,u),
-            Variable => (-2.0,2.0),
+            Variable => get_extremes(visible_slice),
         },
     };
     

@@ -11,6 +11,12 @@ use getopts::{optopt,optflag,getopts,OptGroup,Matches};
 mod view;
 mod data;
 
+fn print_usage(program: &str, _opts: &[OptGroup]) {
+    println!("Usage: {} [options]", program);
+    println!("-o\t\tOutput");
+    println!("-h --help\tUsage");
+}
+
 fn initialize_program() -> Program {
     let args: Vec<String> = os::args();
     let program_name = args[0].clone();
@@ -28,6 +34,11 @@ fn initialize_program() -> Program {
         Ok(m) => { m }
         Err(f) => { fail!(f.to_string()) }
     };
+    
+    if matches.opt_present("h") {
+        print_usage(program_name.as_slice(), opts);
+        fail!("Help Menu");
+    }
     
     return Program {
         data: Vec::new(),
@@ -66,7 +77,6 @@ fn main() {
     initscr();
     curs_set(CURSOR_INVISIBLE);
 
-    let mut t = 0.0f64;
     // While input is availabe on stdin
     for line in io::stdin().lines() {
         // Clear the screen
@@ -76,8 +86,7 @@ fn main() {
         let value:f64 = from_str(line.unwrap().as_slice().trim()).unwrap();
         
         // Push it into the array
-        program.data.push(t.sin());
-        t = t + 0.1;
+        program.data.push(value);
         
         view::render_frame(&program);
         
