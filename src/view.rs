@@ -1,9 +1,8 @@
 use ncurses::*;
 use data::*;
 
+/// Renders a frame of a program
 pub fn render_frame(program:&Program) {
-    //! Render a single frame of input onto the terminal.
-    
     let visible_slice = get_visible_slice(&program.data);
     
     let frame = Frame {
@@ -25,6 +24,7 @@ pub fn render_frame(program:&Program) {
     }
 }
 
+/// Returns the slice of data currently displayed on the terminal
 fn get_visible_slice(data:&Vec<f64>) -> &[f64] {
     let mut start = data.len() as i32 - COLS - 1i32;
     if start < 0 {
@@ -33,6 +33,7 @@ fn get_visible_slice(data:&Vec<f64>) -> &[f64] {
     return data.slice_from(start as uint);
 }
 
+/// Calculates the min and max values within a slice of data
 fn get_extremes(data:&[f64])-> Extremes{
     let (mut min, mut max) = (0.0f64, 0.0f64);
     for i in data.iter() {
@@ -46,6 +47,7 @@ fn get_extremes(data:&[f64])-> Extremes{
     return (min, max);
 }
 
+/// Render data bars
 fn render_bars(frame: &Frame) {
     //! Render the bars of the graph onto the terminal given a frame context
     
@@ -82,6 +84,7 @@ fn render_bar(frame: &Frame, col:i32, value:f64) {
     }
 }
 
+/// Draw the axes and labels
 fn render_axes(frame:&Frame) {
     // Render a vertical line stretching the height of the terminal
     for i in range(0,frame.rows) {
@@ -100,6 +103,8 @@ fn render_axes(frame:&Frame) {
     render_label(frame,min);
 }
 
+/// Converts a data value to the terminal row that the value sould be 
+/// displayed at
 fn value_to_row(frame: &Frame, value:f64) -> i32 {
     let (min,max) = frame.extremes;
     let range = max - min;
@@ -108,6 +113,7 @@ fn value_to_row(frame: &Frame, value:f64) -> i32 {
     return frame.rows - row as i32 - 1;
 }
 
+/// Renders a label at a position defined by a data value
 fn render_label(frame:&Frame,value:f64) {
     let label = value.to_string();
     let row = value_to_row(frame, value);
@@ -116,6 +122,10 @@ fn render_label(frame:&Frame,value:f64) {
     render_overlay_string(row, col, label.as_slice());
 }
 
+/// Renders a character at a given row and column. If colors are reversed
+/// at the position before the character is draw, they are reversed for
+/// the purposes of drawing the character such that text is not obscured
+/// by graph bars
 fn render_overlay_char(row:i32, col:i32, ch:u32) {
     if colors_reversed(row, col) {
         attron(A_REVERSE());
@@ -126,6 +136,7 @@ fn render_overlay_char(row:i32, col:i32, ch:u32) {
     }
 }
 
+/// Renders characters at a given row and column via render_overlay_char
 fn render_overlay_string(row:i32, col:i32, txt:&str) {
     for (i,ch) in txt.chars().enumerate() {
         let c = col + i as i32;
@@ -133,6 +144,7 @@ fn render_overlay_string(row:i32, col:i32, txt:&str) {
     }
 }
 
+/// Centers a string on a row. Text is rendered using render_overlay_string
 fn render_centered_string(row:i32, text:&str) {
     let mid = COLS / 2;
     let start = mid - (text.len()/2u) as i32;
@@ -141,6 +153,7 @@ fn render_centered_string(row:i32, text:&str) {
     }
 }
 
+/// Returns true if colors are reveresed at a given row and column
 fn colors_reversed(row:i32, col:i32) -> bool {
     let attributes = mvinch(row,col) & A_ATTRIBUTES() as u32;
     return 0 < attributes & A_REVERSE() as u32;
