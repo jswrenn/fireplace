@@ -5,7 +5,6 @@ use view::*;
 use data::*;
 use ncurses::*;
 use std::io;
-use std::num::*;
 use std::os;
 use getopts::{optopt,optflag,getopts,OptGroup,Matches};
 mod view;
@@ -75,7 +74,7 @@ fn initialize_scale(matches:&Matches)-> ScaleMode {
 }
 
 fn main() {
-    let mut p: Option<Program> = initialize_program();
+    let p: Option<Program> = initialize_program();
     
     match p {
         Some(_) => {},

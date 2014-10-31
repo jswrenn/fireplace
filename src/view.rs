@@ -1,15 +1,6 @@
 use ncurses::*;
 use data::*;
 
-type Extremes = (f64, f64);
-
-struct Frame<'a> {
-    rows: i32,
-    cols: i32,
-    visible_data:&'a[f64],
-    extremes:Extremes,
-}
-
 pub fn render_frame(program:&Program) {
     //! Render a single frame of input onto the terminal.
     
@@ -74,16 +65,8 @@ fn render_bars(frame: &Frame) {
     attroff(A_REVERSE());
 }
 
-fn render_bar(frame: &Frame, col:i32, value:f64) {
-    //! Render a single bar
-    
-    let (start,end) = if value > 0.0 {
-        (value_to_row(frame, 0.0), value_to_row(frame, value))
-    } else {
-        (value_to_row(frame, value), value_to_row(frame, 0.0))
-    };
-    
-    if value > 0.0{
+fn render_bar(frame: &Frame, col:i32, value:f64) { 
+    if value > 0.0 {
         let start = value_to_row(frame, 0.0);
         let end = value_to_row(frame, value);
         for i in range(end - 1, start + 1) {
@@ -112,9 +95,9 @@ fn render_axes(frame:&Frame) {
     }
     
     let (min,max) = frame.extremes;
-    let nil_label_pos = render_label(frame,0.0);
-    let max_label_pos = render_label(frame,max);
-    let min_label_pos = render_label(frame,min);
+    render_label(frame,0.0);
+    render_label(frame,max);
+    render_label(frame,min);
 }
 
 fn value_to_row(frame: &Frame, value:f64) -> i32 {
