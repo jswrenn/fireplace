@@ -36,7 +36,7 @@ fn initialize_program() -> Option<Program> {
     
     let matches = match getopts(args.tail(), opts) {
         Ok(m) => { m }
-        Err(f) => { fail!(f.to_string()) }
+        Err(f) => { panic!(f.to_string()) }
     };
     
     if matches.opt_present("h") {
@@ -65,7 +65,7 @@ fn initialize_scale(matches:&Matches)-> ScaleMode {
         let upper = match raw_upper {
             Some(txt) => from_str(txt.as_slice()).unwrap(),
             None => {
-                fail!("Upper bound must be specified");
+                panic!("Upper bound must be specified");
             }
         };
         return Fixed(lower,upper);
