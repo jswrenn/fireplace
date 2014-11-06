@@ -1,3 +1,4 @@
+pushd "$(dirname "$0")"
 FREQUENCY=0.1
 T=0.0
 while true;
@@ -6,3 +7,4 @@ do
     T=$T+0.1;
     sleep $FREQUENCY;
 done | ../target/fireplace -t 'Sine'
+popd
