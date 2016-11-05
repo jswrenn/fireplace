@@ -6,12 +6,12 @@ pub fn render_frame(program:&Program) {
     let visible_slice = get_visible_slice(&program.data);
     
     let frame = Frame {
-        rows: LINES,
-        cols: COLS,
+        rows: LINES(),
+        cols: COLS(),
         visible_data: visible_slice,
         extremes : match program.scale {
-            Fixed(l,u) => (l,u),
-            Variable => get_extremes(visible_slice),
+            ScaleMode::Fixed(l,u) => (l,u),
+            ScaleMode::Variable => get_extremes(visible_slice),
         },
     };
     
@@ -19,18 +19,18 @@ pub fn render_frame(program:&Program) {
     render_axes(&frame);
     
     match program.title {
-        Some(ref text) => render_centered_string(0, text.as_slice()),
+        Some(ref text) => render_centered_string(0, &text),
         None => {},
     }
 }
 
 /// Returns the slice of data currently displayed on the terminal
 fn get_visible_slice(data:&Vec<f64>) -> &[f64] {
-    let mut start = data.len() as i32 - COLS - 1i32;
+    let mut start = data.len() as i32 - COLS() - 1i32;
     if start < 0 {
         start = 0;
     }
-    return data.slice_from(start as uint);
+    return &data[start as usize..];
 }
 
 /// Calculates the min and max values within a slice of data
@@ -71,14 +71,14 @@ fn render_bar(frame: &Frame, col:i32, value:f64) {
     if value > 0.0 {
         let start = value_to_row(frame, 0.0);
         let end = value_to_row(frame, value);
-        for i in range(end - 1, start + 1) {
+        for i in end - 1 .. start + 1 {
             mvaddch(i,col,' ' as u32);
         }
     
     } else if value < 0.0 {
         let start = value_to_row(frame, 0.0);
         let end = value_to_row(frame, value);
-        for i in range(start, end+1) {
+        for i in start .. end+1 {
             mvaddch(i,col,' ' as u32);
         }
     }
@@ -87,13 +87,13 @@ fn render_bar(frame: &Frame, col:i32, value:f64) {
 /// Draw the axes and labels
 fn render_axes(frame:&Frame) {
     // Render a vertical line stretching the height of the terminal
-    for i in range(0,frame.rows) {
+    for i in 0 .. frame.rows {
         render_overlay_char(i, frame.cols-1, ACS_VLINE());
     }
     
     // Render a horizontal line stretching the width of the terminal
     let row = value_to_row(frame,0.0);
-    for i in range(0,frame.cols-2) {
+    for i in 0 .. frame.cols-2 {
         render_overlay_char(row, i, ACS_HLINE() as u32);
     }
     
@@ -119,7 +119,7 @@ fn render_label(frame:&Frame,value:f64) {
     let row = value_to_row(frame, value);
     let col = frame.cols - 2 - label.len() as i32;
     render_overlay_char(row, frame.cols - 1, ACS_RTEE());
-    render_overlay_string(row, col, label.as_slice());
+    render_overlay_string(row, col, &label);
 }
 
 /// Renders a character at a given row and column. If colors are reversed
@@ -146,8 +146,8 @@ fn render_overlay_string(row:i32, col:i32, txt:&str) {
 
 /// Centers a string on a row. Text is rendered using render_overlay_string
 fn render_centered_string(row:i32, text:&str) {
-    let mid = COLS / 2;
-    let start = mid - (text.len()/2u) as i32;
+    let mid = COLS() / 2;
+    let start = mid - (text.len()/2) as i32;
     if start > 0 {
         render_overlay_string(row, start, text);
     }

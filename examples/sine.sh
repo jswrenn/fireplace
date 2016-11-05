@@ -6,5 +6,5 @@ do
     echo "scale=5;s($T)" | bc -l;
     T=$T+0.1;
     sleep $FREQUENCY;
-done | ../target/fireplace -t 'Sine'
+done | ../target/debug/fireplace -t 'Sine'
 popd
