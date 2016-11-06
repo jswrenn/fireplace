@@ -4,5 +4,6 @@ name = "fireplace"
 version = "0.0.1"
 authors = ["John Wrenn <johnswrenn@gmail.com>"]
 
-[dependencies.ncurses]
-git = "https://github.com/jeaye/ncurses-rs.git"
+[dependencies]
+ncurses = "5.84.0"
+getopts = "0.2"

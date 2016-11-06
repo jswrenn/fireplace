@@ -2,11 +2,29 @@
 name = "fireplace"
 version = "0.0.1"
 dependencies = [
- "ncurses 5.71.1 (git+https://github.com/jeaye/ncurses-rs.git)",
+ "getopts 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ncurses 5.84.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
-name = "ncurses"
-version = "5.71.1"
-source = "git+https://github.com/jeaye/ncurses-rs.git#e839970267fc1fb8dad3658c04e968bcc546ae18"
+name = "getopts"
+version = "0.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
+[[package]]
+name = "libc"
+version = "0.2.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "ncurses"
+version = "5.84.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "libc 0.2.17 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[metadata]
+"checksum getopts 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)" = "d9047cfbd08a437050b363d35ef160452c5fe8ea5187ae0a624708c91581d685"
+"checksum libc 0.2.17 (registry+https://github.com/rust-lang/crates.io-index)" = "044d1360593a78f5c8e5e710beccdc24ab71d1f01bc19a29bcacdba22e8475d8"
+"checksum ncurses 5.84.0 (registry+https://github.com/rust-lang/crates.io-index)" = "30beffce9ed08187ec156a5d78c501b6ae20ee39eba7d1abf9fdfe522c86ae89"
