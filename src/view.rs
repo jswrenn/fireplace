@@ -1,5 +1,6 @@
 use ncurses::*;
 use data::*;
+use std::f64::{MIN_POSITIVE, MAX};
 
 /// Renders a frame of a program
 pub fn render_frame(program:&Program) {
@@ -78,7 +79,7 @@ fn render_bar(frame: &Frame, col:i32, value:f64) {
     } else if value < 0.0 {
         let start = value_to_row(frame, 0.0);
         let end = value_to_row(frame, value);
-        for i in start .. end+1 {
+        for i in start .. end + 1 {
             mvaddch(i,col,' ' as u32);
         }
     }
@@ -108,8 +109,8 @@ fn render_axes(frame:&Frame) {
 fn value_to_row(frame: &Frame, value:f64) -> i32 {
     let (min,max) = frame.extremes;
     let range = max - min;
-    let scale = (frame.rows as f64 - 1.0)/(range as f64);
-    let row = value*scale - min*scale;
+    let scale = (frame.rows - 1) as f64 / MIN_POSITIVE.max(range);
+    let row = MIN_POSITIVE.max((value - min) * scale);
     return frame.rows - row as i32 - 1;
 }
 
