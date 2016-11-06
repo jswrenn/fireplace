@@ -1,6 +1,6 @@
 use ncurses::*;
 use data::*;
-use std::f64::MIN_POSITIVE;
+use std::f64::{MIN_POSITIVE, INFINITY, NEG_INFINITY};
 
 /// Renders a frame of a program
 pub fn render_frame(program:&Program) {
@@ -35,17 +35,9 @@ fn get_visible_slice(data:&Vec<f64>) -> &[f64] {
 }
 
 /// Calculates the min and max values within a slice of data
-fn get_extremes(data:&[f64])-> Extremes{
-    let (mut min, mut max) = (0.0f64, 0.0f64);
-    for i in data.iter() {
-        if *i < min {
-            min = *i;
-        }
-        if *i > max {
-            max = *i;
-        }
-    }
-    return (min, max);
+fn get_extremes(data:&[f64])-> Extremes {
+    data.iter().fold((INFINITY, NEG_INFINITY),
+        |(min, max), n| (n.min(min), n.max(max)))
 }
 
 /// Render data bars
